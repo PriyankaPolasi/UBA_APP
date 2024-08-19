@@ -1,0 +1,21 @@
+# Core libraries
+numpy
+pandas
+tensorflow
+scikit-learn
+
+# Web scraping and HTML parsing
+beautifulsoup4
+
+# Google API client libraries
+google-api-python-client
+google-auth
+google-auth-oauthlib
+
+# SpaCy and its language model
+spacy
+
+# MySQL connector
+mysql-connector-python
+
+

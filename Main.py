@@ -8,7 +8,6 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-
 try:
     data = pd.read_csv('urlset.csv', encoding='latin1', usecols=['domain', 'label'], low_memory=False)
 except UnicodeDecodeError:
@@ -21,6 +20,7 @@ data = data[data['label'].isin([0, 1])]
 
 shuffled_data = data.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
 first_100_values = shuffled_data  # Get the first 100 rows
+#first_100_values = shuffled_data.head(100)
 
 urls = first_100_values['domain'].values
 labels = first_100_values['label'].values
