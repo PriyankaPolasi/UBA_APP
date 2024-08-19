@@ -35,7 +35,7 @@ jobs:
 
     - name: Send report via email
       run: |
-        python -c """
+        python -c "
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -73,4 +73,4 @@ def send_email_report(filename, recipient_email):
     server.quit()
 
 send_email_report('email_report.csv', 'priyankapolasi206@gmail.com')
-        """
+        "
