@@ -25,7 +25,7 @@ jobs:
 
     - name: Run MailFetch and generate report
       run: |
-        python MainFetch.py > output.txt 2>&1
+        python MailFetch.py > output.txt 2>&1
 
     - name: Upload output file
       uses: actions/upload-artifact@v2
