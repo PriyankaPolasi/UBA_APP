@@ -27,13 +27,18 @@ jobs:
       run: |
         python MailFetch.py > output.txt 2>&1
 
+    - name: List files in the directory
+      run: ls -la
+
     - name: Upload output file
+      if: always()  # Ensure this step runs even if the previous steps fail
       uses: actions/upload-artifact@v2
       with:
         name: output-file
         path: output.txt
 
     - name: Upload report artifact
+      if: always()  # Ensure this step runs even if the previous steps fail
       uses: actions/upload-artifact@v2
       with:
         name: email-report
