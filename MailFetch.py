@@ -1,4 +1,4 @@
-import os.path
+import os
 import base64
 import re
 import json
