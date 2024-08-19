@@ -23,12 +23,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run tests and save output to file
-      run: |
-        python MainFetch.py > output.txt 2>&1
+   - name: Run tests and save output to file
+  run: |
+    python MainFetch.py > output.txt 2>&1
 
-    - name: Upload output file
-      uses: actions/upload-artifact@v2
-      with:
-        name: output
-        path: output.txt
+- name: Upload output file
+  uses: actions/upload-artifact@v2
+  with:
+    name: output
+    path: output.txt
+
+- name: Upload debug log
+  uses: actions/upload-artifact@v2
+  with:
+    name: debug-log
+    path: debug.log
