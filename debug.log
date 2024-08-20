@@ -2797,3 +2797,5 @@
 2024-08-20 16:37:28,109 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 1
 2024-08-20 16:48:54,783 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
 2024-08-20 16:48:54,859 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 1
+2024-08-20 17:00:16,744 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 17:00:16,836 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
