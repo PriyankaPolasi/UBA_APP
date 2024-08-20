@@ -36,12 +36,40 @@ jobs:
       run: |
         python -m spacy download en_core_web_sm
 
-    - name: Initialize MySQL Database
+    - name: Initialize Database Schema
       env:
         MYSQL_PWD: 123456789
       run: |
         sudo apt-get install -y mysql-client
-        mysql --host=127.0.0.1 --port=3306 -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456789'; FLUSH PRIVILEGES;"
+        mysql --host=127.0.0.1 --port=3306 -u root -p123456789 Phishing <<EOF
+        CREATE TABLE IF NOT EXISTS emails (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          sender VARCHAR(255),
+          subject VARCHAR(255),
+          date DATETIME,
+          body TEXT,
+          malicious BOOLEAN,
+          time TIME
+        );
+        CREATE TABLE IF NOT EXISTS urls (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email_id INT,
+          url TEXT,
+          FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
+        );
+        CREATE TABLE IF NOT EXISTS malurls (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email_id INT,
+          url TEXT,
+          FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
+        );
+        CREATE TABLE IF NOT EXISTS exec_files (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email_id INT,
+          file_name TEXT,
+          FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
+        );
+        EOF
 
     - name: Run MailFetch and generate report
       env:
