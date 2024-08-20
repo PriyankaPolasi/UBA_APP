@@ -24,21 +24,13 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run MailFetch and generate report
-      run: |
-        python MailFetch.py > output.txt 2>&1
+      run: python MailFetch.py
 
     - name: List files in the directory
       run: ls -la
 
-    - name: Upload output file
-      if: always()  # Ensure this step runs even if the previous steps fail
-      uses: actions/upload-artifact@v2
-      with:
-        name: output-file
-        path: output.txt
-
     - name: Upload report artifact
-      if: always()  # Ensure this step runs even if the previous steps fail
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: email-report
