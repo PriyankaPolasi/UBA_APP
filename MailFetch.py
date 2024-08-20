@@ -1,4 +1,4 @@
-import os
+import os.path
 import base64
 import re
 import json
@@ -14,10 +14,10 @@ import Main
 import email.utils
 import logging
 
+SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+
 # Set up logging
 logging.basicConfig(filename='debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
-
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
@@ -30,7 +30,8 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('clientcredientials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'clientcredientials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
@@ -80,11 +81,10 @@ def parse_email_body(body, html_body=None):
 
 def store_email_data(email_data, urls, malurls, exec_files, all_emails):
     conn = mysql.connector.connect(
-        host=os.getenv('MYSQL_HOST', 'localhost'),
-        user=os.getenv('MYSQL_USER', 'root'),
-        password=os.getenv('MYSQL_PASSWORD', '123456789'),
-        database=os.getenv('MYSQL_DATABASE', 'Phishing'),
-        port=int(os.getenv('MYSQL_PORT', 3306))
+        host="localhost",
+        user="root",
+        password="123456789",
+        database="Phishing"
     )
     cursor = conn.cursor()
 
@@ -120,7 +120,8 @@ def generate_report(all_emails, filename="email_report.csv"):
         print("No emails to report.")
         return
 
-    output_path = os.path.join("C:/Users/priya/PycharmProjects/pythonProject", filename)  # Change this to your desired directory
+    # Save the report to the current working directory
+    output_path = os.path.join(os.getcwd(), filename)
     print(f"Generating report with {len(all_emails)} emails...")
     df = pd.DataFrame(all_emails)
     df.to_csv(output_path, index=False)
