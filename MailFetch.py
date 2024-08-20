@@ -13,14 +13,21 @@ from bs4 import BeautifulSoup
 import Main
 import email.utils
 import logging
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
-
-# Set up logging
+# Configure logging
 logging.basicConfig(filename='debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+
+# SCOPES for Gmail API
+SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
+
 
 def get_service():
     creds = None
@@ -30,14 +37,14 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'clientcredientials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('clientcredientials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
 
     service = build('gmail', 'v1', credentials=creds)
     return service
+
 
 def extract_html_links(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -51,6 +58,7 @@ def extract_html_links(html):
                     urls.add(url)
 
     return list(urls)
+
 
 def parse_email_body(body, html_body=None):
     url_pattern = re.compile(r'https?://[^\s\'"()<>]+|www\.[^\s\'"()<>]+', re.IGNORECASE)
@@ -78,6 +86,7 @@ def parse_email_body(body, html_body=None):
     exec_files = [token for token in tokens if any(pattern.match(token) for pattern in file_patterns)]
 
     return urls, exec_files
+
 
 def store_email_data(email_data, urls, malurls, exec_files, all_emails):
     conn = mysql.connector.connect(
@@ -121,17 +130,51 @@ def generate_report(all_emails, filename="email_report.csv"):
         print("No emails to report.")
         return
 
-    # Ensure the directory exists
-    output_dir = "."
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    output_path = os.path.join(output_dir, filename)
-
+    output_path = os.path.join("output", filename)  # Save to a relative path
     print(f"Generating report with {len(all_emails)} emails...")
     df = pd.DataFrame(all_emails)
     df.to_csv(output_path, index=False)
     print(f"Report generated: {output_path}")
+
+    # Email the report
+    send_email_report(output_path, 'priyankapolasi206@gmail.com')
+
+
+def send_email_report(filename, recipient_email):
+    sender_email = 'priyankapolasi206@gmail.com'
+    sender_password = os.environ.get('EMAIL_PASSWORD')  # Ensure this environment variable is set correctly
+
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = recipient_email
+    message['Subject'] = 'Email Report - Malicious and Non-Malicious Emails'
+
+    body = 'Please find attached the report of processed emails.'
+    message.attach(MIMEText(body, 'plain'))
+
+    # Attach the report
+    with open(filename, 'rb') as attachment:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        part.add_header(
+            'Content-Disposition',
+            f'attachment; filename= {filename}',
+        )
+        message.attach(part)
+
+    # Send the email
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = message.as_string()
+        server.sendmail(sender_email, recipient_email, text)
+        server.quit()
+        print("Email sent successfully")
+    except Exception as e:
+        print(f"Failed to send email: {str(e)}")
+
 
 def get_emails(service, user_id='me', label_ids=['INBOX'], max_results=500):
     results = service.users().messages().list(userId=user_id, labelIds=label_ids, maxResults=max_results).execute()
@@ -178,45 +221,4 @@ def get_emails(service, user_id='me', label_ids=['INBOX'], max_results=500):
             urls, exec_files = parse_email_body(body, html_body if html_body else None)
             email_data['body'] = body
             email_data['urls'] = urls
-            email_data['exec_files'] = exec_files
-
-            email_data['malicious'] = "0"
-            malurls = []
-            norurls = []
-            for url in urls:
-                result = Main.predict_malicious_url(url)
-                if result == 1 or len(exec_files) > 0:
-                    email_data['malicious'] = "1"
-                    malurls.append(url)
-                else:
-                    norurls.append(url)
-            email_data['norurls'] = norurls
-            email_data['malurls'] = malurls
-            print(json.dumps(email_data, indent=4))
-            store_email_data(email_data, norurls, malurls, exec_files, all_emails)
-            emails.append(email_data)
-
-    # Generate the report after all emails have been processed
-    generate_report(all_emails)
-
-    return emails
-
-def parse_date(date_str):
-    try:
-        dt = email.utils.parsedate_to_datetime(date_str)
-        date = dt.date().strftime('%Y-%m-%d')
-        time = dt.time().strftime('%H:%M:%S')
-        return date, time
-    except Exception as e:
-        print(f"Error parsing date: {e}")
-        return '', ''
-
-def main():
-    print("Current Working Directory:", os.getcwd())
-    service = get_service()
-    emails = get_emails(service)
-    for email in emails:
-        print(json.dumps(email, indent=4))
-
-if __name__ == '__main__':
-    main()
+            email_data['exec_files'] = exec
