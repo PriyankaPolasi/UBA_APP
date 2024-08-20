@@ -105,7 +105,10 @@ jobs:
         def send_email_report(filename, recipient_email):
             sender_email = 'priyankapolasi206@gmail.com'
             recipient_email = 'priya.polasi@gmail.com'
-            sender_password = os.getenv('ABCabc012')
+            sender_password = os.getenv('EMAIL_PASSWORD')
+
+            if sender_password is None:
+                raise ValueError("Email password not found. Make sure to set the 'EMAIL_PASSWORD' secret in GitHub.")
 
             message = MIMEMultipart()
             message['From'] = sender_email
