@@ -89,9 +89,8 @@ jobs:
       with:
         name: email-report
         path: email_report.csv
+
     - name: Send report via email
-      env:
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
       run: |
         python -c """
         import smtplib
@@ -104,7 +103,7 @@ jobs:
         def send_email_report(filename, recipient_email):
             sender_email = 'priyankapolasi206@gmail.com'
             recipient_email = 'priya.polasi@gmail.com'
-            sender_password = os.environ['EMAIL_PASSWORD']
+            sender_password = os.environ.get('EMAIL_PASSWORD')  # Ensure the secret is set in GitHub Secrets
 
             message = MIMEMultipart()
             message['From'] = sender_email
