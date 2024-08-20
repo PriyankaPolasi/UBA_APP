@@ -105,7 +105,7 @@ jobs:
         def send_email_report(filename, recipient_email):
             sender_email = 'priyankapolasi206@gmail.com'
             recipient_email = 'priya.polasi@gmail.com'
-            sender_password = os.getenv('EMAIL_PASSWORD')
+            sender_password = os.getenv('ABCabc012')
 
             message = MIMEMultipart()
             message['From'] = sender_email

@@ -22,8 +22,8 @@ data['label'] = pd.to_numeric(data['label'], errors='coerce').fillna(0).astype(i
 data = data[data['label'].isin([0, 1])]
 
 shuffled_data = data.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
-first_100_values = shuffled_data  # Get the first 100 rows
-#first_100_values = shuffled_data.head(100)
+#first_100_values = shuffled_data  # Get the first 100 rows
+first_100_values = shuffled_data.head(100)
 
 urls = first_100_values['domain'].values
 labels = first_100_values['label'].values
