@@ -44,31 +44,31 @@ jobs:
         mysql --host=127.0.0.1 --port=3306 -u root -p123456789 Phishing <<EOF
         CREATE TABLE IF NOT EXISTS emails (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          sender VARCHAR(255),
-          subject VARCHAR(255),
+          sender VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+          subject VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
           date DATETIME,
-          body TEXT,
+          body TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
           malicious BOOLEAN,
           time TIME
-        );
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         CREATE TABLE IF NOT EXISTS urls (
           id INT AUTO_INCREMENT PRIMARY KEY,
           email_id INT,
-          url TEXT,
+          url TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
           FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
-        );
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         CREATE TABLE IF NOT EXISTS malurls (
           id INT AUTO_INCREMENT PRIMARY KEY,
           email_id INT,
-          url TEXT,
+          url TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
           FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
-        );
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         CREATE TABLE IF NOT EXISTS exec_files (
           id INT AUTO_INCREMENT PRIMARY KEY,
           email_id INT,
-          file_name TEXT,
+          file_name TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
           FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
-        );
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         EOF
 
     - name: Run MailFetch and generate report
