@@ -46,7 +46,7 @@ jobs:
     - name: Initialize MySQL Database
       run: |
         sudo apt-get install -y mysql-client
-        mysql -h 127.0.0.1 -uroot -prootpassword -e "CREATE USER 'ci_user'@'%' IDENTIFIED BY 'ci_password'; GRANT ALL PRIVILEGES ON *.* TO 'ci_user'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+        mysql -h 127.0.0.1 -uroot -prootpassword -e "DROP USER IF EXISTS 'ci_user'@'%'; CREATE USER 'ci_user'@'%' IDENTIFIED BY 'ci_password'; GRANT ALL PRIVILEGES ON *.* TO 'ci_user'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 
     - name: Run MailFetch and generate report
       env:
