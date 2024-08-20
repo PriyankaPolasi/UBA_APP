@@ -22,3 +22,9 @@ COPY . .
 
 # Specify the command to run MailFetch.py by default
 CMD ["python", "MailFetch.py"]
+
+ENV MYSQL_HOST=127.0.0.1
+ENV MYSQL_PORT=3306
+ENV MYSQL_USER=root
+ENV MYSQL_PASSWORD=123456789
+ENV MYSQL_DATABASE=Phishing
