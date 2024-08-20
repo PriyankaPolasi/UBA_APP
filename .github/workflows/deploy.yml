@@ -91,6 +91,8 @@ jobs:
         path: email_report.csv
 
     - name: Send report via email
+      env:
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
       run: |
         python -c """
         import smtplib
@@ -103,7 +105,7 @@ jobs:
         def send_email_report(filename, recipient_email):
             sender_email = 'priyankapolasi206@gmail.com'
             recipient_email = 'priya.polasi@gmail.com'
-            sender_password = os.environ.get('ABCabc012')
+            sender_password = os.getenv('EMAIL_PASSWORD')
 
             message = MIMEMultipart()
             message['From'] = sender_email
