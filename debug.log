@@ -2789,3 +2789,11 @@
 2024-08-20 16:25:16,750 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
 2024-08-20 16:25:34,111 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
 2024-08-20 16:25:34,174 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
+2024-08-20 16:31:41,642 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:31:41,705 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
+2024-08-20 16:36:10,076 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:36:10,140 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
+2024-08-20 16:37:28,039 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:37:28,109 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 1
+2024-08-20 16:48:54,783 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:48:54,859 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 1
