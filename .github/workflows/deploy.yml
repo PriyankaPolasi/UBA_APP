@@ -100,4 +100,4 @@ jobs:
           subject: malious mails report
           body: PFA
           to: priya.polasi@gmail.com
-          from: ${{ secrets.MAIL_USERNAME }}
+          from: ${{ secrets.EMAIL_USERNAME }}
