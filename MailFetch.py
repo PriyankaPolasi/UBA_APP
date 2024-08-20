@@ -115,13 +115,19 @@ def store_email_data(email_data, urls, malurls, exec_files, all_emails):
     all_emails.append(email_data)
     print(f"Appended email: {email_data['subject']}")
 
+
 def generate_report(all_emails, filename="email_report.csv"):
     if not all_emails:
         print("No emails to report.")
         return
 
-    # Save the report to the current working directory
-    output_path = os.path.join(os.getcwd(), filename)
+    # Ensure the directory exists
+    output_dir = "."
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    output_path = os.path.join(output_dir, filename)
+
     print(f"Generating report with {len(all_emails)} emails...")
     df = pd.DataFrame(all_emails)
     df.to_csv(output_path, index=False)
