@@ -142,7 +142,7 @@ def generate_report(all_emails, filename="email_report.csv"):
 
 def send_email_report(filename, recipient_email):
     sender_email = 'priyankapolasi206@gmail.com'
-    sender_password = os.environ.get('ABAabc012')  # Ensure this environment variable is set correctly
+    sender_password = os.environ.get('EMAIL_PASSWORD')  # Ensure this environment variable is set correctly
 
     message = MIMEMultipart()
     message['From'] = sender_email
