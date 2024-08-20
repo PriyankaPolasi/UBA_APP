@@ -15,6 +15,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
           MYSQL_DATABASE: Phishing
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_password
         ports:
           - 3306:3306
         options: >-
@@ -41,17 +43,17 @@ jobs:
       run: |
         python -m spacy download en_core_web_sm
 
-    - name: Grant MySQL Privileges
+    - name: Initialize MySQL Database
       run: |
         sudo apt-get install -y mysql-client
-        mysql -h 127.0.0.1 -u root -prootpassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'rootpassword'; FLUSH PRIVILEGES;"
+        mysql -h 127.0.0.1 -uroot -prootpassword -e "CREATE USER 'ci_user'@'%' IDENTIFIED BY 'ci_password'; GRANT ALL PRIVILEGES ON *.* TO 'ci_user'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 
     - name: Run MailFetch and generate report
       env:
         MYSQL_HOST: 127.0.0.1
         MYSQL_PORT: 3306
-        MYSQL_USER: root
-        MYSQL_PASSWORD: 123456789
+        MYSQL_USER: ci_user
+        MYSQL_PASSWORD: ci_password
         MYSQL_DATABASE: Phishing
       run: python MailFetch.py
 
