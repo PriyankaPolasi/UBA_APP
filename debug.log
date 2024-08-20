@@ -2783,3 +2783,9 @@
 2024-08-20 05:18:28,343 INFO:Generating report with 18 emails...
 2024-08-20 05:18:28,351 INFO:Report generated: C:\Users\priya\PycharmProjects\pythonProject\email_report.csv
 2024-08-20 05:18:29,642 ERROR:An error occurred: 'NoneType' object has no attribute 'encode'
+2024-08-20 16:24:56,503 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:24:56,562 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
+2024-08-20 16:25:16,684 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:25:16,750 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
+2024-08-20 16:25:34,111 INFO:URL: www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php - Malicious: 1
+2024-08-20 16:25:34,174 INFO:URL: code.google.com/p/pysqlite/ - Malicious: 0
