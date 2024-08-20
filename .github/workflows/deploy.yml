@@ -95,45 +95,45 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
       run: |
         python -c """
-        import smtplib
-        from email.mime.multipart import MIMEMultipart
-        from email.mime.text import MIMEText
-        from email.mime.base import MIMEBase
-        from email import encoders
-        import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import os
 
-        def send_email_report(filename, recipient_email):
-            sender_email = 'priyankapolasi206@gmail.com'
-            recipient_email = 'priya.polasi@gmail.com'
-            sender_password = os.getenv('EMAIL_PASSWORD')
+def send_email_report(filename, recipient_email):
+    sender_email = 'priyankapolasi206@gmail.com'
+    recipient_email = 'priya.polasi@gmail.com'
+    sender_password = os.getenv('EMAIL_PASSWORD')
 
-            if sender_password is None:
-                raise ValueError("Email password not found. Make sure to set the 'EMAIL_PASSWORD' secret in GitHub.")
+    if sender_password is None:
+        raise ValueError("Email password not found. Make sure to set the 'EMAIL_PASSWORD' secret in GitHub.")
 
-            message = MIMEMultipart()
-            message['From'] = sender_email
-            message['To'] = recipient_email
-            message['Subject'] = 'Email Report - Malicious and Non-Malicious Emails'
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = recipient_email
+    message['Subject'] = 'Email Report - Malicious and Non-Malicious Emails'
 
-            body = 'Please find attached the report of processed emails.'
-            message.attach(MIMEText(body, 'plain'))
+    body = 'Please find attached the report of processed emails.'
+    message.attach(MIMEText(body, 'plain'))
 
-            with open(filename, 'rb') as attachment:
-                part = MIMEBase('application', 'octet-stream')
-                part.set_payload(attachment.read())
-                encoders.encode_base64(part)
-                part.add_header(
-                    'Content-Disposition',
-                    f'attachment; filename= {filename}',
-                )
-                message.attach(part)
+    with open(filename, 'rb') as attachment:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        part.add_header(
+            'Content-Disposition',
+            f'attachment; filename= {filename}',
+        )
+        message.attach(part)
 
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login(sender_email, sender_password)
-            text = message.as_string()
-            server.sendmail(sender_email, recipient_email, text)
-            server.quit()
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, sender_password)
+    text = message.as_string()
+    server.sendmail(sender_email, recipient_email, text)
+    server.quit()
 
-        send_email_report('email_report.csv', 'priya.polasi@gmail.com')
-        """
+send_email_report('email_report.csv', 'priya.polasi@gmail.com')
+"""
