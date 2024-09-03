@@ -31,11 +31,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
       - name: Download spaCy model
         run: |
           python -m spacy download en_core_web_sm
-
       - name: Initialize Database Schema
         env:
           MYSQL_PWD: 123456789
@@ -70,7 +68,6 @@ jobs:
             FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
           ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
           EOF
-
       - name: Run MailFetch and generate report
         env:
           MYSQL_HOST: 127.0.0.1
@@ -83,33 +80,22 @@ jobs:
       - name: List files in the directory
         run: ls -la
 
-      - name: Verify report file
-        run: |
-          if [ -f "output/email_report.csv" ]; then
-            echo "Report exists!"
-            cat output/email_report.csv
-          else
-            echo "Report does not exist in the output directory!"
-            exit 1
-          fi
-
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: email-report
-          path: output/email_report.csv
+          path: email_report.csv
 
-
-      - name: Send report via email
+      - name: send report via mail
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Malicious Mails Report"
-          body: "Please find the attached email report."
+          subject: malious mails report
+          body: PFA
           to: priya.polasi@gmail.com
           from: ${{ secrets.EMAIL_USERNAME }}
           attachments: email_report.csv

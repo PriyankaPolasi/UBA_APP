@@ -130,17 +130,7 @@ def generate_report(all_emails, filename="email_report.csv"):
         print("No emails to report.")
         return
 
-    output_dir = "output"  # Ensure this directory exists or change to a valid path
-    output_path = os.path.join(output_dir, filename)
-
-    # Debugging: Confirm directory and path
-    print(f"Saving report to: {output_path}")
-
-    # Ensure the output directory exists
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        print(f"Created directory: {output_dir}")
-
+    output_path = os.path.join("output", filename)  # Save to a relative path
     print(f"Generating report with {len(all_emails)} emails...")
     df = pd.DataFrame(all_emails)
     df.to_csv(output_path, index=False)
