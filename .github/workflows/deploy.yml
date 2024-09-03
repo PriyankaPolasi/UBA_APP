@@ -98,4 +98,3 @@ jobs:
           body: PFA
           to: priya.polasi@gmail.com
           from: ${{ secrets.EMAIL_USERNAME }}
-          attachments: email_report.csv
