@@ -85,11 +85,11 @@ jobs:
 
       - name: Verify report file
         run: |
-          if [ -f "email_report.csv" ]; then
+          if [ -f "output/email_report.csv" ]; then
             echo "Report exists!"
-            cat email_report.csv
+            cat output/email_report.csv
           else
-            echo "Report does not exist!"
+            echo "Report does not exist in the output directory!"
             exit 1
           fi
 
@@ -98,7 +98,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: email-report
-          path: email_report.csv
+          path: output/email_report.csv
+
 
       - name: Send report via email
         uses: dawidd6/action-send-mail@v3
