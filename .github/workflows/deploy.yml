@@ -83,6 +83,16 @@ jobs:
       - name: List files in the directory
         run: ls -la
 
+      - name: Verify report file
+        run: |
+          if [ -f "email_report.csv" ]; then
+            echo "Report exists!"
+            cat email_report.csv
+          else
+            echo "Report does not exist!"
+            exit 1
+          fi
+
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v2
@@ -101,4 +111,4 @@ jobs:
           body: "Please find the attached email report."
           to: priya.polasi@gmail.com
           from: ${{ secrets.EMAIL_USERNAME }}
-          attachments: email_report.csv  # Ensure this path is correct
+          attachments: email_report.csv
